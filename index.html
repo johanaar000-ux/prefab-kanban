@@ -70,8 +70,10 @@ function showItem(it, code){
   if (it.joke) {
     body = `<div class="banner" style="text-align:center;font-size:20px;font-weight:800">TRY BEING A MAN!!</div>`;
   } else if (it.spears) {
-    body = `<p class="sub">Spears refills this bin. Adding it puts it on the Friday 12:00 PM Spears list.</p>
-      <label class="field">How many are left? <small>(optional)</small><input id="left" type="number" inputmode="numeric" min="0"></label>`;
+    body = `<p class="sub">Spears refills this bin. Adding it puts it on the Friday 12:00 PM Spears list with this qty.</p>
+      <label class="field">How many are left? <small>(optional — updates the qty)</small><input id="left" type="number" inputmode="numeric" min="0"></label>
+      <div class="qtyrow"><div><b>Qty for Spears to bring</b><div class="sub">Suggested ${esc(it.suggest)}</div></div>
+        <div class="stepper"><button type="button" id="minus" aria-label="less">−</button><input id="qty" type="number" inputmode="numeric" min="1" value="${esc(it.suggest)}"><button type="button" id="plus" aria-label="more">+</button></div></div>`;
   } else {
     body = `
       <label class="field">How many are left? <small>(optional — updates the qty)</small><input id="left" type="number" inputmode="numeric" min="0"></label>
@@ -106,7 +108,8 @@ function showItem(it, code){
     const who = $("#who").value.trim(); setName(who);
     const lines = [(it.bin ? `Bin ${it.bin} - ` : "") + it.name];
     if (qty) {
-      lines.push(`Qty: ${Math.max(1, Math.round(+qty.value || 1))}`, `Order now: ${$("#now").checked ? "yes" : "no"}`, `Bypass shop: ${$("#bypass").checked ? "yes" : "no"}`);
+      lines.push(`Qty: ${Math.max(1, Math.round(+qty.value || 1))}`);
+      if ($("#now")) lines.push(`Order now: ${$("#now").checked ? "yes" : "no"}`, `Bypass shop: ${$("#bypass").checked ? "yes" : "no"}`);
     }
     if (left && left.value !== "") lines.push(`Left: ${Math.max(0, Math.round(+left.value))}`);
     if (who) lines.push(`From: ${who}`);
